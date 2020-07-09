@@ -22,6 +22,8 @@ public class Jogador : MonoBehaviour
 
     public Text pontosText;
 
+    public Animator animatorComponent;
+
     void Update()
     {
         pontos += Time.deltaTime * multiplicadorPontos;
@@ -32,6 +34,15 @@ public class Jogador : MonoBehaviour
         {
             Pular();
         }
+
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            Abaixar();
+        }
+        else if (Input.GetKeyUp(KeyCode.DownArrow))
+        {
+            Levantar();
+        }
     }
 
     void Pular()
@@ -40,6 +51,16 @@ public class Jogador : MonoBehaviour
         {
             rb.AddForce(Vector2.up * forcaPulo);
         }
+    }
+
+    void Abaixar()
+    {
+        animatorComponent.SetBool("Abaixado", true);
+    }
+
+    void Levantar()
+    {
+        animatorComponent.SetBool("Abaixado", false);
     }
 
     private void FixedUpdate()
