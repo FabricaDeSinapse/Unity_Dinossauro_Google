@@ -16,7 +16,7 @@ public class Jogador : MonoBehaviour
 
     private bool estaNoChao;
 
-    private float pontos;
+    public float pontos;
 
     private float highscore;
 

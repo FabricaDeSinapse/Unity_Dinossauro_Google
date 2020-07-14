@@ -497,7 +497,7 @@ GameObject:
   - component: {fileID: 237100113}
   - component: {fileID: 237100112}
   m_Layer: 0
-  m_Name: GeradorCacto
+  m_Name: GeradorInimigos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -518,8 +518,14 @@ MonoBehaviour:
   cactoPrefabs:
   - {fileID: 4995765765501704421, guid: 76e2305d8c9e3e54588f06e8682afcaf, type: 3}
   - {fileID: 4995765765501704421, guid: 92fb796d99cb1c14cbb0a2b7268a81b2, type: 3}
+  dinossauroVoadorPrefab: {fileID: 3171058765050096733, guid: aa840f26fdc82b04f84572cecbbd2b16,
+    type: 3}
+  dinossauroVoadorYMinimo: 0
+  dinossauroVoadorYMaximo: 2
+  dinossauroVoadorPontuacaoMinima: 300
   delayInicial: 0
   delayEntreCactos: 1.5
+  jogadorScript: {fileID: 358441155}
 --- !u!4 &237100113
 Transform:
   m_ObjectHideFlags: 0
@@ -704,6 +710,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   distanciaMinimaChao: 0.8
+  pontos: 0
   multiplicadorPontos: 12
   pontosText: {fileID: 2049096175}
   highscoreText: {fileID: 1803329037}
