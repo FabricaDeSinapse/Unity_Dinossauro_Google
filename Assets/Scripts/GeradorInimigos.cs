@@ -18,37 +18,76 @@ public class GeradorInimigos : MonoBehaviour
 
     public float delayEntreCactos;
 
+    public float distanciaMinima = 4;
+
+    public float distanciaMaxima = 8;
+
+    private float distanciaNecessaria;
+
+    private float distanciaAtual;
+
     public Jogador jogadorScript;
 
     private void Start()
     {
-        InvokeRepeating("GerarInimigo", delayInicial, delayEntreCactos);
+        // InvokeRepeating("GerarInimigo", delayInicial, delayEntreCactos);
+
+        StartCoroutine(GerarInimigo());
     }
 
-    private void GerarInimigo()
+    private IEnumerator GerarInimigo()
     {
-        var dado = Random.Range(1, 7);
+        yield return new WaitForSeconds(delayInicial);
 
-        if (jogadorScript.pontos >= dinossauroVoadorPontuacaoMinima && dado <= 2)
+        GameObject ultimoInimigoGerado = null;
+
+        var distanciaNecessaria = 0f;
+
+        while (true)
         {
-            // Gerar Dinossauro Voador
-            var posicaoYAleatoria = Random.Range(dinossauroVoadorYMinimo, dinossauroVoadorYMaximo);
+            var geracaoObjetoLiberada =
+                ultimoInimigoGerado == null
+                || Vector3.Distance(transform.position, ultimoInimigoGerado.transform.position) >= distanciaNecessaria;
 
-            var posicao = new Vector3(
-                transform.position.x,
-                transform.position.y + posicaoYAleatoria,
-                transform.position.z
-            );
+            this.distanciaNecessaria = distanciaNecessaria;
 
-            Instantiate(dinossauroVoadorPrefab, posicao, Quaternion.identity);
-        }
-        else
-        {
-            // Gerar Cacto
-            var quantidadeCactos = cactoPrefabs.Length;
-            var indiceAleatorio = Random.Range(0, quantidadeCactos);
-            var cactoPrefab = cactoPrefabs[indiceAleatorio];
-            Instantiate(cactoPrefab, transform.position, Quaternion.identity);
+            if (ultimoInimigoGerado != null)
+            {
+                distanciaAtual = Vector3.Distance(transform.position, ultimoInimigoGerado.transform.position);
+            }
+
+            if (geracaoObjetoLiberada)
+            {
+                var dado = Random.Range(1, 7);
+
+                if (jogadorScript.pontos >= dinossauroVoadorPontuacaoMinima && dado <= 2)
+                {
+                    // Gerar Dinossauro Voador
+                    var posicaoYAleatoria = Random.Range(dinossauroVoadorYMinimo, dinossauroVoadorYMaximo);
+
+                    var posicao = new Vector3(
+                        transform.position.x,
+                        transform.position.y + posicaoYAleatoria,
+                        transform.position.z
+                    );
+
+                    ultimoInimigoGerado = Instantiate(dinossauroVoadorPrefab, posicao, Quaternion.identity);
+                }
+                else
+                {
+                    // Gerar Cacto
+                    var quantidadeCactos = cactoPrefabs.Length;
+                    var indiceAleatorio = Random.Range(0, quantidadeCactos);
+                    var cactoPrefab = cactoPrefabs[indiceAleatorio];
+                    ultimoInimigoGerado = Instantiate(cactoPrefab, transform.position, Quaternion.identity);
+                }
+
+                distanciaNecessaria = Random.Range(distanciaMinima, distanciaMaxima);
+            }
+
+            yield return null;
+
+            // yield return new WaitForSeconds(delayEntreCactos);
         }
     }
 }
